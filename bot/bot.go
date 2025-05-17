@@ -44,7 +44,12 @@ func ListenUpdates(bot *tgbotapi.BotAPI) {
 
 		switch update.Message.Command() {
 		case "start":
-
+			text := "Бот помогает отслеживать статус подписок на сервисы. \nИспользуй команды:" +
+				"\n/setsub — указать подписку" +
+				"\n/status — список подписок" +
+				"\n/next — следующая дата списания" +
+				"\n/delete — удалить подписку"
+			bot.Send(tgbotapi.NewMessage(chatID, text))
 		case "help":
 			text := "Бот помогает отслеживать статус подписок на сервисы. \nИспользуй команды:" +
 				"\n/setsub — указать подписку" +

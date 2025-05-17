@@ -2,6 +2,7 @@ package storage
 
 import (
 	"mysub/models"
+	"time"
 )
 
 func SaveSubscription(sub *models.Subscription) error {
@@ -33,8 +34,8 @@ func DeleteSubscriptionByName(telegramID int64, name string) (*models.Subscripti
 func GetNextSubscription(telegramID int64) (*models.Subscription, error) {
 	var sub models.Subscription
 	tx := DB.
-		Where("telegram_id = ?", telegramID).
-		Order("next_payment desc").
+		Where("telegram_id = ? AND next_payment >= ?", telegramID, time.Now()).
+		Order("next_payment asc").
 		First(&sub)
 
 	if tx.Error != nil {
