@@ -6,13 +6,9 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/joho/godotenv"
 	"log"
-	"mysub/api"
 	tg "mysub/bot"
 	"mysub/internal/storage"
-	"mysub/models"
-	"net/http"
 	"os"
-	"time"
 )
 
 func main() {
@@ -39,24 +35,4 @@ func main() {
 	tg.InitBot(bot)
 	tg.ListenUpdates(bot)
 
-	subs := []models.Subscription{
-		{
-			Service:  "Spotify",
-			Price:    1.0,
-			CreateDt: time.Now(),
-			Category: "music",
-		},
-		{
-			Service:  "AWS",
-			Price:    1.0,
-			CreateDt: time.Now(),
-			Category: "cloud",
-		},
-	}
-
-	r.Use(api.SetUserCtx(subs))
-
-	r.Get("/api/user/me", api.HandleGet)
-
-	http.ListenAndServe(":8080", r)
 }
