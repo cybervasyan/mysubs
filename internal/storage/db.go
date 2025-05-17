@@ -5,13 +5,12 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"mysub/models"
-	"os"
 )
 
 var DB *gorm.DB
 
-func InitDb() error {
-	databaseUrl := os.Getenv("DATABASE_URL")
+func InitDb(dbToken string) error {
+	databaseUrl := dbToken
 	if databaseUrl == "" {
 		return fmt.Errorf("DATABASE_URL не задан в окружении")
 	}
