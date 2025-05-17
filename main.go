@@ -11,6 +11,8 @@ import (
 func main() {
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
+		log.Printf("RAILWAY env: %v", os.Environ())
+		log.Printf("DATABASE_URL: %s", dbURL)
 		log.Fatal("DATABASE_URL не задан")
 	}
 
