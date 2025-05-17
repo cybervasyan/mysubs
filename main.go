@@ -2,20 +2,25 @@ package main
 
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"log"
 	tg "mysub/bot"
 	"mysub/internal/storage"
 	"os"
 )
 
 func main() {
-	token := os.Getenv("TELEGRAM_APITOKEN")
-	dsn := os.Getenv("DATABASE_URL")
-	err := storage.InitDb(dsn)
+	dbURL := os.Getenv("DATABASE_URL")
+	if dbURL == "" {
+		log.Fatal("DATABASE_URL не задан")
+	}
 
-	var bot *tgbotapi.BotAPI
-	bot, err = tgbotapi.NewBotAPI(token)
+	if err := storage.InitDb(dbURL); err != nil {
+		log.Fatalf("Ошибка инициализации БД: %v", err)
+	}
+
+	bot, err := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APITOKEN"))
 	if err != nil {
-		panic(err)
+		log.Fatalf("Ошибка запуска бота: %v", err)
 	}
 
 	tg.InitBot(bot)
