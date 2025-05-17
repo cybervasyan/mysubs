@@ -1,6 +1,7 @@
 package subscription
 
 import (
+	"log"
 	"mysub/internal/storage"
 	"mysub/models"
 	"strconv"
@@ -51,6 +52,7 @@ func ProcessSubscription(chatID int64, input string) (string, bool) {
 	case StepWaitingForDate:
 		date, err := time.Parse("02.01.2006", input)
 		if err != nil {
+			log.Printf("Неверный формат даты: %v", err)
 			return "Неверный формат даты. Попробуйте ещё раз:", true
 		}
 		sub.NextPayment = date
@@ -59,8 +61,10 @@ func ProcessSubscription(chatID int64, input string) (string, bool) {
 
 		err = storage.SaveSubscription(&sub)
 		if err != nil {
+			log.Printf("ошибка сохранения в БД: %v", err)
 			return "Ошибка при сохранении подписки", true
 		}
+
 		delete(userState, chatID)
 		delete(tempSubs, chatID)
 		return "Подписка успешно добавлена!", false
