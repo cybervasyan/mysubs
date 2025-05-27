@@ -3,6 +3,7 @@ package bot
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
+	"mysub/internal/notify"
 	"mysub/internal/storage"
 	"mysub/internal/subscription"
 	"strconv"
@@ -11,6 +12,8 @@ import (
 func InitBot(bot *tgbotapi.BotAPI) {
 	bot.Debug = true
 	log.Printf("Authorized on account %s", bot.Self.UserName)
+
+	notify.Start(bot)
 }
 
 func ListenUpdates(bot *tgbotapi.BotAPI) {

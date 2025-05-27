@@ -44,3 +44,15 @@ func GetNextSubscription(telegramID int64) (*models.Subscription, error) {
 
 	return &sub, nil
 }
+
+func GetAllTelegramIDs() ([]int64, error) {
+	var ids []int64
+
+	if err := DB.Model(&models.Subscription{}).
+		Distinct("telegram_id").
+		Pluck("telegram_id", &ids).Error; err != nil {
+		return nil, err
+	}
+
+	return ids, nil
+}
