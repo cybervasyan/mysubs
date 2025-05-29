@@ -30,7 +30,7 @@ func Start(bot *tgbotapi.BotAPI) {
 					if sub.NextPayment.Sub(now).Hours() <= 24 && sub.NextPayment.After(now) {
 						msg := tgbotapi.NewMessage(chatID,
 							"⏰ Напоминание: завтра будет списание по подписке «"+sub.Service+"» ("+
-								sub.NextPayment.Format("DD-MM-YYYY")+")"+").")
+								sub.NextPayment.Format("02-01-2006")+")"+").")
 						_, err := bot.Send(msg)
 						if err != nil {
 							log.Printf("ошибка отправки уведомления пользователю %d: %v", chatID, err)
